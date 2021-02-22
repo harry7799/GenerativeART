@@ -32,17 +32,14 @@ void draw(){
   yoff+=0.1;
   }
     background(#5B5B5B);
-    stroke(255);//#FFFF37//#ACD6FF
+    stroke(255);
     noFill();
     translate(width/2,height/2-100);
-    //rotateX(PI/3);  
     translate(-w/2,-h/2);
     frameRate(1);
   for(int y=0;y<rows-1;y++){
     beginShape(TRIANGLE_STRIP);
   for(int x=0;x<cols;x++){
-     vertex(x*scl,y*scl,terrain[x][y]);
-    vertex(x*scl,(y+1)*scl,terrain[x][y+1]);
     rect(x*scl,y*scl,terrain[x][y],terrain[x][y],1);
   }
   endShape();
