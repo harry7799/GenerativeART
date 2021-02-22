@@ -1,0 +1,63 @@
+import gifAnimation.*;
+
+GifMaker gifExport;
+int frames = 0;
+int totalFrames = 200;
+
+int cols,rows;
+int scl = 20;
+int w=2000;
+int h=1600;
+float[][] terrain;
+float flying=0;
+void setup(){
+  smooth();
+  size(800,800,P3D);
+  cols=w/scl;
+  rows=h/scl;
+  terrain= new float[cols][rows];
+  gifExport = new GifMaker(this, "export.gif", 100);
+  gifExport.setRepeat(0); // make it an "endless" animation
+  
+}
+void draw(){
+  flying-=0.01;
+  float yoff=flying;
+  for(int y=0;y<rows;y++){
+     float xoff=flying;
+  for(int x=0;x<cols;x++){
+  terrain[x][y]= map(noise(xoff,yoff),0,1,-100,100);
+  xoff+=0.1;
+  }
+  yoff+=0.1;
+  }
+    background(#5B5B5B);
+    stroke(255);//#FFFF37//#ACD6FF
+    noFill();
+    translate(width/2,height/2-100);
+    //rotateX(PI/3);  
+    translate(-w/2,-h/2);
+    frameRate(1);
+  for(int y=0;y<rows-1;y++){
+    beginShape(TRIANGLE_STRIP);
+  for(int x=0;x<cols;x++){
+     vertex(x*scl,y*scl,terrain[x][y]);
+    vertex(x*scl,(y+1)*scl,terrain[x][y+1]);
+    rect(x*scl,y*scl,terrain[x][y],terrain[x][y],1);
+  }
+  endShape();
+}
+export();
+}
+void export() {
+  if(frames < totalFrames) {
+    gifExport.setDelay(20);
+    gifExport.addFrame();
+    frames++;
+  } else {
+    gifExport.finish();
+    frames++;
+    println("gif saved");
+    exit();
+  }
+}
